@@ -23,8 +23,59 @@ class FormInput extends StatefulWidget {
 class _FormInputState extends State<FormInput> {
   GlobalKey<FormState> formKey = GlobalKey();
 
+  String email = '';
+  String password = '';
+
   void submit() {
-    formKey.currentState!.validate();
+    if (!formKey.currentState!.validate()) {
+      // break function
+      return;
+    }
+    // hide keyboard
+    FocusScope.of(context).unfocus();
+    // save email pasword and print
+    formKey.currentState!.save();
+    print([email, password]);
+  }
+
+  Widget userInput({label, icon, keyboard, saveFunction, obscure = false}) {
+    return TextFormField(
+      validator: (value) {
+        if (value!.isEmpty || value.length < 6) {
+          return 'Please enter an email address.';
+        }
+        return null;
+      },
+      onSaved: saveFunction,
+      // controller: emailController,
+      keyboardType: keyboard,
+      obscureText: obscure,
+      // autocorrect: false,
+      // readOnly: true,
+      // enabled: false,
+      decoration: InputDecoration(
+        prefixIcon: icon,
+        // suffixIcon: Icon(Icons.person)
+        // hintText: "Email",
+        labelText: label,
+        // labelStyle: TextStyle(color: Colors.amber)
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.red)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.red)),
+        errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.red)),
+        focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.red)),
+        disabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.red)),
+      ),
+    );
   }
 
   @override
@@ -39,81 +90,23 @@ class _FormInputState extends State<FormInput> {
           key: formKey,
           child: Column(
             children: [
-              TextFormField(
-                validator: (value) {
-                  if (value!.isEmpty || value.length < 6) {
-                    return 'Please enter an email address.';
-                  }
-                  return null;
-                },
-                // controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                // obscureText: true,
-                // autocorrect: false,
-                // readOnly: true,
-                // enabled: false,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.person),
-                  // suffixIcon: Icon(Icons.person)
-                  // hintText: "Email",
-                  labelText: "Email",
-                  // labelStyle: TextStyle(color: Colors.amber)
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.red)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.red)),
-                  errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.red)),
-                  focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.red)),
-                  disabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.red)),
-                ),
-              ),
+              userInput(
+                  label: 'Email',
+                  icon: Icon(Icons.person),
+                  keyboard: TextInputType.emailAddress,
+                  saveFunction: (value) {
+                    email = value!;
+                  }),
               SizedBox(
                 height: 12,
               ),
-              TextFormField(
-                validator: (value) {
-                  if (value!.isEmpty || value.length < 6) {
-                    return 'Please enter a valid password.';
-                  }
-                  return null;
-                },
-                // controller: passswordController,
-                keyboardType: TextInputType.text,
-                obscureText: true,
-                // autocorrect: false,
-                // readOnly: true,
-                // enabled: false,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.lock),
-                  // suffixIcon: Icon(Icons.person)
-                  // hintText: "Email",
-                  labelText: "Password",
-                  // labelStyle: TextStyle(color: Colors.amber)
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.red)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.red)),
-                  errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.red)),
-                  focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.red)),
-                  disabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.red)),
-                ),
-              ),
+              userInput(
+                  label: 'Password',
+                  icon: Icon(Icons.lock),
+                  saveFunction: (value) {
+                    password = value!;
+                  },
+                  obscure: true),
               SizedBox(
                 height: 20,
               ),
