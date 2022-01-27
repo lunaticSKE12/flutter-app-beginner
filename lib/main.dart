@@ -21,6 +21,12 @@ class FormInput extends StatefulWidget {
 }
 
 class _FormInputState extends State<FormInput> {
+  GlobalKey<FormState> formKey = GlobalKey();
+
+  void submit() {
+    formKey.currentState!.validate();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,16 +35,24 @@ class _FormInputState extends State<FormInput> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-        child: Column(
-          children: [
-            TextFormField(
-              // controller: emailController,
-              keyboardType: TextInputType.emailAddress,
-              // obscureText: true,
-              // autocorrect: false,
-              // readOnly: true,
-              // enabled: false,
-              decoration: InputDecoration(
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                validator: (value) {
+                  if (value!.isEmpty || value.length < 6) {
+                    return 'Please enter an email address.';
+                  }
+                  return null;
+                },
+                // controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                // obscureText: true,
+                // autocorrect: false,
+                // readOnly: true,
+                // enabled: false,
+                decoration: InputDecoration(
                   prefixIcon: Icon(Icons.person),
                   // suffixIcon: Icon(Icons.person)
                   // hintText: "Email",
@@ -49,19 +63,35 @@ class _FormInputState extends State<FormInput> {
                       borderSide: BorderSide(color: Colors.red)),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.red))),
-            ),
-            SizedBox(
-              height: 12,
-            ),
-            TextFormField(
-              // controller: passswordController,
-              keyboardType: TextInputType.text,
-              obscureText: true,
-              // autocorrect: false,
-              // readOnly: true,
-              // enabled: false,
-              decoration: InputDecoration(
+                      borderSide: BorderSide(color: Colors.red)),
+                  errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Colors.red)),
+                  focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Colors.red)),
+                  disabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Colors.red)),
+                ),
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              TextFormField(
+                validator: (value) {
+                  if (value!.isEmpty || value.length < 6) {
+                    return 'Please enter a valid password.';
+                  }
+                  return null;
+                },
+                // controller: passswordController,
+                keyboardType: TextInputType.text,
+                obscureText: true,
+                // autocorrect: false,
+                // readOnly: true,
+                // enabled: false,
+                decoration: InputDecoration(
                   prefixIcon: Icon(Icons.lock),
                   // suffixIcon: Icon(Icons.person)
                   // hintText: "Email",
@@ -72,30 +102,38 @@ class _FormInputState extends State<FormInput> {
                       borderSide: BorderSide(color: Colors.red)),
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Colors.red))),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              width: double.infinity,
-              height: 60,
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(24)),
-                textColor: Colors.white,
-                color: Colors.blue,
-                onPressed: () {
-                  // print(emailController.text);
-                  // print(passswordController.text);
-                },
-                child: Text(
-                  'Submit',
-                  style: TextStyle(fontSize: 18),
+                      borderSide: BorderSide(color: Colors.red)),
+                  errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Colors.red)),
+                  focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Colors.red)),
+                  disabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: Colors.red)),
                 ),
               ),
-            )
-          ],
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                width: double.infinity,
+                height: 60,
+                child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(24)),
+                  textColor: Colors.white,
+                  color: Colors.blue,
+                  onPressed: submit,
+                  child: Text(
+                    'Submit',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
