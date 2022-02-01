@@ -27,6 +27,14 @@ class _HomeState extends State<Home> {
         body: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Text(
+          'Custom Fonts',
+          style: TextStyle(
+              fontSize: 25, fontFamily: 'Prompt', fontWeight: FontWeight.bold),
+        ),
+        SizedBox(
+          height: 20,
+        ),
         Center(
           child:
               // Image.asset(
